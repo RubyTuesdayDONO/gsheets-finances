@@ -6,13 +6,6 @@ var expect = chai.expect; // we are using the "expect" style of Chai
 
 var accumifs=require.main.require('impl/accumifs.js');
 
-describe('alwaysSucceeds', function() {
-    it('alwaysSucceeds() should always suceed', function() {
-	expect(true).to.equal(true);
-    });
-});
-
-
 describe('legacyTest', function() {
     it('legacyTest', function() {
 	var accum_range=[[1], [2], [3]];
