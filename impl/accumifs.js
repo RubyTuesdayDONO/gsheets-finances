@@ -3,6 +3,14 @@ _ACCUMIFS = {
   Matchers: {}
 }
 
+if(typeof(Logger)=='undefined') {
+    Logger={
+	log: function(){
+	    // stub implementation to prevent execution errors under Node.js
+	}
+    };
+}
+
 /**
  * SUMIFS enhancement to support advanced pattern matching, such as regular expressions
  *
