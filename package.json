@@ -1,0 +1,24 @@
+{
+  "name": "gsheets-finances",
+  "version": "0.0.1",
+  "description": "Google Sheets add-on for personal financial planning",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^2.5.3"
+  },
+  "scripts": {
+    "test": "mocha test --recursive"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/RubyTuesdayDONO/gsheets-finances.git"
+  },
+  "author": "Reuben Garrett <ruby@rubydono.net>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/RubyTuesdayDONO/gsheets-finances/issues"
+  },
+  "homepage": "https://github.com/RubyTuesdayDONO/gsheets-finances#readme"
+}
