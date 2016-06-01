@@ -4,12 +4,23 @@
 var chai = require('chai');
 var expect = chai.expect; // we are using the "expect" style of Chai
 
-//var basicTest = require.main.require('impl/test.js');
-
-//var CartSummary = require('./../../src/part1/cart-summary');
+var accumifs=require.main.require('impl/accumifs.js');
 
 describe('alwaysSucceeds', function() {
     it('alwaysSucceeds() should always suceed', function() {
 	expect(true).to.equal(true);
+    });
+});
+
+
+describe('legacyTest', function() {
+    it('legacyTest', function() {
+	var accum_range=[[1], [2], [3]];
+	var accumulator='sum';
+	var cond_range=[['include'], ['exclude'], ['include â¦ joost keeding!']];
+	var cond='/clude$/';
+	var expected=3;
+	var retval;
+	expect(accumifs.ACCUMIFS(accum_range, accumulator, cond_range, cond)).to.equal(expected);
     });
 });
