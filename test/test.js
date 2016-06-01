@@ -13,9 +13,3 @@ describe('alwaysSucceeds', function() {
 	expect(true).to.equal(true);
     });
 });
-
-describe('alwaysFails', function() {
-    it('alwaysFails() should always fail', function() {
-	expect(true).to.equal(false);
-    });
-});
