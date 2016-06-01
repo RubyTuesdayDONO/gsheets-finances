@@ -21,9 +21,9 @@ if(typeof(Logger)=='undefined') {
  * @return {Value}      the accumulated value across all matching cells in the accum_range
  * @customFunction
  */
-function ACCUMIFS_new() {
+function ACCUMIFS() {
   var args=Array.prototype.slice.call(arguments);
-  
+
   if (args.length>0) {
     var accum_range=args.shift();
     var accumulator=_ACCUMIFS.buildAccumulator(args.shift());
@@ -40,25 +40,25 @@ function ACCUMIFS_new() {
         var cond;
         cond=conditionals[i+1];
         var condFn;
-        
+
         if (typeof(cond)=='string') {
           var cond_regex_match=cond_regex_patt.exec(cond);
           if (cond_regex_match!=null) {
-            condFn=new ACCUMIFS_Matcher_Regex(new RegExp(cond_regex_match[1], 'i'));
+            condFn=new _ACCUMIFS.Matchers.Regex(new RegExp(cond_regex_match[1], 'i'));
           } else {
             // http://stackoverflow.com/a/6969486/155090
             // https://developer.mozilla.org/en/docs/Web/JavaScript/Guide/Regular_Expressions
             /// cond = new RegExp(cond.trim().replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), 'i');
-            condFn=new ACCUMIFS_Matcher_Value(cond);
+            condFn=new _ACCUMIFS.Matchers.Value(cond);
           }
         } else {
           Logger.log('cond (%s): %s: ', typeof(cond), cond);
-          condFn=new ACCUMIFS_Matcher_Value(cond);
+          condFn=new _ACCUMIFS.Matchers.Value(cond);
         }
         condFn.call=Function.prototype.call;
         cond_tests.push(condFn);
       }
-    
+
       // TODO: ensure accumulable and conditional row counts align
       //var accumulator=0;
       var accumulation;
@@ -95,7 +95,7 @@ function ACCUMIFS_new() {
 _ACCUMIFS.buildAccumulator = function (accumulator_name) {
   switch (accumulator_name) {
     case 'sum':
-      return new _ACCUMIFS._Accumulator_sum();
+      return new _ACCUMIFS.Accumulators.Sum();
       break;
     default:
       throw 'unrecognized accumulator: '+ accumulator_name;
@@ -120,7 +120,7 @@ _ACCUMIFS.Matchers.Regex = function(pattern) {
     return (this.pattern.test(trial_value));
   };
 }
-      
+
 _ACCUMIFS.Matchers.Value = function(value) {
   this.value=value;
   this.test=function(trial_value){
@@ -128,7 +128,6 @@ _ACCUMIFS.Matchers.Value = function(value) {
     return trial_value==this.value;
   };
 }
-       
 
 function test_ACCUMIFS_new() {
   //=sumifs(Model!N:N, Model!H:H,D2,Model!G:G,"Mandatory",Model!P:P,true)*30
@@ -141,7 +140,7 @@ function test_ACCUMIFS_new() {
   var valMandatory='Test';
   var ModelPP=book.getRange('Model!P:P').getValues();
   var valTrue=true;
-  
+
   var accum_range=[[1], [2], [3]];
   var accumulator='sum';
   var cond_range=[['include'], ['exclude'], ['include â¦ joost keeding!']];
@@ -150,16 +149,21 @@ function test_ACCUMIFS_new() {
   var retval;
   try {
     retval = ACCUMIFS_new(accum_range, accumulator, cond_range, cond);
-    Logger.log('ACCUMIFS_new(accum_range=%s, accumulator="%s", cond_range=%s, cond="%s"): expected %s, received %s', 
+    Logger.log('ACCUMIFS_new(accum_range=%s, accumulator="%s", cond_range=%s, cond="%s"): expected %s, received %s',
                accum_range, accumulator, cond_range, cond, expected, retval);
     if (expected!=retval) {
       throw new Error('expected ' + expected + ', but received ' + retval);
     }
   } catch (e) {
-    Logger.log('ACCUMIFS_new(accum_range=%s, accumulator="%s", cond_range=%s, cond="%s"): expected %s, exception@%s:%s: %s', 
+    Logger.log('ACCUMIFS_new(accum_range=%s, accumulator="%s", cond_range=%s, cond="%s"): expected %s, exception@%s:%s: %s',
                accum_range, accumulator, cond_range, cond, expected, e.fileName, e.lineNumber, e.message);
     throw new Error(e.message, e.fileName, e.lineNumber);
   }
   //return RNPG_SUMIFS(ModelAmount, ModelHH, valCategory, ModelGG, valMandatory, ModelPP, valTrue);
-  
+
+}
+
+
+module.exports = {
+    ACCUMIFS: ACCUMIFS
 }
